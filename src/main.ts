@@ -70,6 +70,7 @@ async function run(): Promise<void> {
     if (inputs.install) {
       core.startGroup(`Setting buildx as default builder`);
       await exec.exec('docker', ['buildx', 'install']);
+      stateHelper.setBuildxIsDefaultBuilder('true');
       core.endGroup();
     }
 
@@ -116,6 +117,20 @@ async function cleanup(): Promise<void> {
     core.startGroup(`Removing builder`);
     await exec
       .getExecOutput('docker', ['buildx', 'rm', `${stateHelper.builderName}`], {
+        ignoreReturnCode: true
+      })
+      .then(res => {
+        if (res.stderr.length > 0 && res.exitCode != 0) {
+          core.warning(res.stderr.trim());
+        }
+      });
+    core.endGroup();
+  }
+
+  if (stateHelper.IsBuildxDefaultBuilder) {
+    core.startGroup('Uninstalling build aliased to buildx');
+    await exec
+      .getExecOutput('docker', ['buildx', 'uninstall'], {
         ignoreReturnCode: true
       })
       .then(res => {
