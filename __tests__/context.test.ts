@@ -33,6 +33,7 @@ describe('getCreateArgs', () => {
         ['install', 'false'],
         ['use', 'true'],
         ['cleanup', 'true'],
+        ['keep-state', 'false']
       ]),
       [
         'create',
@@ -50,6 +51,7 @@ describe('getCreateArgs', () => {
         ['install', 'false'],
         ['use', 'true'],
         ['cleanup', 'true'],
+        ['keep-state', 'false']
       ]),
       [
         'create',
@@ -67,6 +69,7 @@ describe('getCreateArgs', () => {
         ['use', 'false'],
         ['driver-opts', 'image=moby/buildkit:master\nnetwork=host'],
         ['cleanup', 'true'],
+        ['keep-state', 'false']
       ]),
       [
         'create',
@@ -86,6 +89,7 @@ describe('getCreateArgs', () => {
         ['install', 'false'],
         ['use', 'true'],
         ['cleanup', 'true'],
+        ['keep-state', 'false']
       ]),
       [
         'create',
@@ -105,6 +109,7 @@ describe('getCreateArgs', () => {
         ['install', 'false'],
         ['use', 'true'],
         ['cleanup', 'true'],
+        ['keep-state', 'false']
       ]),
       [
         'create',
@@ -123,6 +128,7 @@ describe('getCreateArgs', () => {
         ['use', 'false'],
         ['driver-opts', `"env.no_proxy=localhost,127.0.0.1,.mydomain"`],
         ['cleanup', 'true'],
+        ['keep-state', 'false'],
       ]),
       [
         'create',
@@ -140,6 +146,7 @@ describe('getCreateArgs', () => {
         ['use', 'false'],
         ['platforms', 'linux/amd64\n"linux/arm64,linux/arm/v7"'],
         ['cleanup', 'true'],
+        ['keep-state', 'false'],
       ]),
       [
         'create',
@@ -148,7 +155,25 @@ describe('getCreateArgs', () => {
         '--buildkitd-flags', '--allow-insecure-entitlement security.insecure --allow-insecure-entitlement network.host',
         '--platform', 'linux/amd64,linux/arm64,linux/arm/v7'
       ]
-    ]
+    ],
+    [
+      7,
+      'v0.10.3',
+      new Map<string, string>([
+        ['install', 'false'],
+        ['use', 'true'],
+        ['cleanup', 'true'],
+        ['keep-state', 'false'],
+        ['name', 'test-builder-name'],
+      ]),
+      [
+        'create',
+        '--name', 'test-builder-name',
+        '--driver', 'docker-container',
+        '--buildkitd-flags', '--allow-insecure-entitlement security.insecure --allow-insecure-entitlement network.host',
+        '--use'
+      ]
+    ],
   ])(
     '[%d] given buildx %s and %p as inputs, returns %p',
     async (num: number, buildxVersion: string, inputs: Map<string, string>, expected: Array<string>) => {
@@ -185,6 +210,7 @@ describe('getAppendArgs', () => {
         ['install', 'false'],
         ['use', 'true'],
         ['cleanup', 'true'],
+        ['keep-state', 'false']
       ]),
       {
         "name": "aws_graviton2",
