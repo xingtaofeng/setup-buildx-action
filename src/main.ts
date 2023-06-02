@@ -66,6 +66,8 @@ actionsToolkit.run(
     fs.mkdirSync(Buildx.certsDir, {recursive: true});
     stateHelper.setCertsDir(Buildx.certsDir);
 
+    stateHelper.setKeepState(inputs.keepState);
+
     if (inputs.driver !== 'docker') {
       await core.group(`Creating a new builder instance`, async () => {
         const certsDriverOpts = Buildx.resolveCertsDriverOpts(inputs.driver, inputs.endpoint, {
@@ -176,7 +178,7 @@ actionsToolkit.run(
         const buildx = new Buildx({standalone: stateHelper.standalone});
         const builder = new Builder({buildx: buildx});
         if (await builder.exists(stateHelper.builderName)) {
-          const rmCmd = await buildx.getCommand(['rm', stateHelper.builderName]);
+          const rmCmd = await buildx.getCommand(['rm', stateHelper.builderName, stateHelper.keepState ? '--keep-state' : '']);
           await exec
             .getExecOutput(rmCmd.command, rmCmd.args, {
               ignoreReturnCode: true

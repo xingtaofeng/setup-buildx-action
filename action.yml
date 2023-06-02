@@ -47,6 +47,12 @@ inputs:
   cleanup:
     description: 'Cleanup temp files and remove builder at the end of a job'
     default: 'true'
+  keep-state:
+    description: 'Keep state on cleanup'
+    default: 'false'
+    required: false
+  name:
+    description: 'Builder name use use when creating the builder. If not specified, one will be generated. Specifying a name enables reusing a buildkit volume in persistent self-hosted runners.'
     required: false
 
 outputs:
